@@ -15,10 +15,10 @@ Etapes:
 La première étape consiste en la préparation de la communication entre la station de contrôle et la machine cliente. Pour commencer, il est nécessaire de générer des clés RSA afin de permettre d'avoir une communication chiffrée (SSH) et de s'authentifier par la même occasion. Ensuite il est nécessaire de copier la clé publique sur la machine cliente et installer l'agent SCAP.  
 
 ```//Génération d'une paire de clés  
-ssh-keygen -b 4096 -t rsa -f $HOME/.ssh/id_rsa_srv2 -q -N ""  
+**ssh-keygen -b 4096 -t rsa -f $HOME/.ssh/id_rsa_srv2 -q -N ""**  
 //Utilisation de la variable $target et copie de la clé publique sur la machine cible  
-target="srv2"  
-ssh-copy-id $target  
+**target="srv2"  
+ssh-copy-id $target**  
 //Installation de SCAP sur la machine  cible  
 ssh $target "yum -y install scap-security-guide"
 ```
@@ -55,7 +55,7 @@ oscap-ssh --sudo root@$target 22 xccdf eval \
 $data_stream  
 //Activation d'un service http basique afin de consulter les rapports  
 python3 -m http.server 8080  
-Note: étant donné que firewalld est inactif il était, ici, inutile d'ajouter une nouvelle règle pour accèder à la station de contrôle en http
+Note: étant donné que firewalld est inactif il était, ici, inutile d'ajouter une nouvelle règle
 ```
 Le rapport "srv2-bp028minimal-before-report.html" affiche un total de 39 points testés dont 16 ont échoués pour un résultat de 87% étant donné qu'il s'agit là du niveau minimal, on peut penser qu'il faudrait obtenir 100% peu importe le contexte. Afin d'avoir un point de comparaison, le scan a été également fait en niveau intermédiaire. Dans ce cas, le résultat est nettement revu à la baisse, 151 points de contrôle dont 100 ont échoués pour un résultat de 45%.
 
