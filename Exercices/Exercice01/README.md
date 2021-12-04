@@ -8,7 +8,7 @@ Etapes:
 3. Scan de la machine cliente et analyse du rapport
 4. Décision concernant les points à résoudre
 5. Préparation de la remédiation et application de celle-ci
-6. Validation de l'applications des remédiations
+6. Validation de l'application des remédiations
 7. Conclusion
 
 ###  Copie de clé et installation de l'agent sur la machine cliente:
@@ -99,7 +99,7 @@ L'idée initiale était de générer les 2 remédiations mais de les déclencher
 - rule1-srv2-bp028minimal-before-playbook.yml
 - rule2-srv2-bp028minimal-before-playbook.yml
 
-Pour une raison encore non-identifiée, bien que les résultats d'Ansible étaient bons, les paramètres ne semblaient pas avoir été modifiés. De ce fait, rule1*.yml a été utilisé et une fois la configuration confirmée, le fichier "maître" a été utilisé à nouveau avec succès.
+Pour une raison encore non-identifiée, bien que les résultats d'Ansible étaient bons, les paramètres ne semblaient pas avoir été modifiés. De ce fait, rule1*.yml a été utilisé et une fois la configuration confirmée, le fichier "maître" a été utilisé à nouveau avec succès pour la remédiation de rule2.
 
 ### Validation de l'applications des remédiations
 Sagissant ici d'une double remédiation, pour obtenir un résultat plus visuel, un scan global a été effectué et celui-ci confirme bien le passage de 16 à 14 points en échec pour un résultat de 90%.
@@ -117,7 +117,7 @@ oscap-ssh --sudo root@$target 22 xccdf eval \
 $data_stream  
 ```
 ### Conclusion
-Des serveurs en production sont, par définition, exposés à tous types de menaces. C'est pourquoi il est important d'avoir un moyen de vérifier leur état et ce de façon réfulière. Dans le cas de SCAP, une bonne pratique pourrait être de planifier un scan de façon "régulière", par exemple, 1 fois par mois en faisant bien attention de s'assurer que les guides soient mis à jours. Il peut être également intéressant de garder un historique, par exemple 12 rapports (1an), afin de pouvoir observer l'évolution en terme de sécurité. Aussi, dans le cas d'un paramètre mis en échec alors que précédemment il ne l'était pas pourrait être un signe important (alerte) qu'il s'agisse d'un acte malveillant ou non.  
+Des serveurs en production sont, par définition, exposés à tous types de menaces. C'est pourquoi il est important d'avoir un moyen de vérifier leur état et ce de façon régulière. Dans le cas de SCAP, une bonne pratique pourrait être de planifier un scan de façon répétée, par exemple, 1 fois par mois en faisant bien attention de s'assurer que les guides soient mis à jours. Il peut être également intéressant de garder un historique, par exemple 12 rapports (1an), afin de pouvoir observer l'évolution en terme de sécurité. Aussi, dans le cas d'un paramètre mis en échec alors que précédemment il ne l'était pas cela pourrait être un signe important (alerte) qu'il s'agisse d'un acte malveillant ou non.  
 Au délà des tâches planifiées, il serait bon également de garder en tête un planning de remédiations (non urgentes) afin de continuellement sécuriser les machines de manière progressive.  
 Afin de rendre les scans et les remédiations plus flexibles, il serait sans doute intéressant d'avoir des guides de sécurités et fichiers de remédiations qui regrouperaient uniquement certains domaines. Comme par exemple un guide de sécurité et un fichier de remédiation axé uniquement sur les mots de passe. Et cela, dans le but de ne pas être obligé de lancer un scan complet lorsque ce n'est pas nécessaire (SCAP Workbench).
 Enfin, il est capital de traiter les "failles" en fonction des risques et non pas seulement en fonction du nombre de points en échec, dans certains cas, on peut même imaginer que certaines société éprouvent le besoin de personnaliser certaines règles.
