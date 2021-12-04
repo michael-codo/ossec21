@@ -9,8 +9,7 @@ Etapes:
 4. Décision concernant les points à résoudre
 5. Préparation de la remédiation et application de celle-ci
 6. Validation de l'applications des remédiations
-7. Plus loin  
-//////////////////////////////////////////////////////////////////////
+7. Plus loin
 
 1. Copie de clé et installation de l'agent sur la machine cliente:
 ---
