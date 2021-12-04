@@ -11,7 +11,7 @@ Etapes:
 6. Validation de l'applications des remédiations
 7. Conclusion
 
-###  Titre 3 Copie de clé et installation de l'agent sur la machine cliente:
+###  Copie de clé et installation de l'agent sur la machine cliente:
 La première étape consiste en la préparation de la communication entre la station de contrôle et la machine cliente. Pour commencer, il est nécessaire de générer des clés RSA afin de permettre d'avoir une communication chiffrée (SSH) et de s'authentifier par la même occasion. Ensuite il est nécessaire de copier la clé publique sur la machine cliente et installer l'agent SCAP.  
 
 //Génération d'une paire de clés  
@@ -22,7 +22,7 @@ ssh-copy-id $target
 //Installation de SCAP sur la machine  cible  
 ssh $target "yum -y install scap-security-guide"  
 
-###  Titre 3 Préparation de la station
+### Préparation de la station
 La station ayant déjà été utilisée, il n'est pas nécessaire d'installer openscap-utils et scap-security-guide. Il est toutefois nécessaire de télécharger les guides de sécurité qui sont différents des précédents.
 
 //Accès aux guides et copie locale  
@@ -34,7 +34,7 @@ data_stream="/usr/share/xml/scap/ssg/content/ssg-rhel7-ds-1.2.xml"
 //Définition du dictionnaire  
 cpe_dict="/usr/share/xml/scap/ssg/content/ssg-rhel7-cpe-dictionary.xml"  
 
-###  Titre 3 Scan de la machine cliente et analyse du rapport
+### Scan de la machine cliente et analyse du rapport
 Avant de lancer un scan, il est nécessaire de sélectionner et identifier le profil à utiliser. Une fois le scan terminé il est alors possible de consulter les résultats au format .html
 
 //Affichage des différents profils disponibles  
@@ -59,14 +59,14 @@ Note: étant donné que firewalld est inactif il était, ici, inutile d'ajouter 
 
 Le rapport "srv2-bp028minimal-before-report.html" affiche un total de 39 points testés dont 16 ont échoués pour un résultat de 87% étant donné qu'il s'agit là du niveau minimal, on peut penser qu'il faudrait obtenir 100% peu importe le contexte. Afin d'avoir un point de comparaison, le scan a été également fait en niveau intermédiaire. Dans ce cas, le résultat est nettement revu à la baisse, 151 points de contrôle dont 100 ont échoués pour un résultat de 45%.
 
-###  Titre 3 Décision concernant les points à résoudre
+### Décision concernant les points à résoudre
 La sécurité est un point essentiel en informatique malgré tout remédier à tous les points d'un rapport de sécurité peut, dans certains cas, être plus risqué.
 Un serveur en production pourrait rencontrer des problèmes lors de l'application de remédiations, interrompant ainsi les services ce qui aurait bien évidemment un effet contre-productif. C'est pourquoi il est important de planifier et tester toutes ces routines de maintenance en dehors d'un environnement de production.
 C'est dans ce cadre, qu'il a été décidé de remédier à 2 problèmes faisant partie de la même catégorie:
 - xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs
 - xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs
 
-###  Titre 3 Préparation de la remédiation et application de celle-ci
+### Préparation de la remédiation et application de celle-ci
 //Scan d'une règle (répetée une 2ème fois pour rule2)  
 rule1="xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs"  
 type="rule1-$target-bp028minimal-before"  
@@ -101,7 +101,7 @@ L'idée initiale était de générer les 2 remédiations mais de les déclencher
 
 Pour une raison encore non-identifiée, bien que les résultats d'Ansible étaient bons, les paramètres ne semblaient pas avoir été modifiés. De ce fait, rule1*.yml a été utilisé et une fois la configuration confirmée, le fichier "maître" a été utilisé à nouveau avec succès.
 
-###  Titre 3 Validation de l'applications des remédiations
+### Validation de l'applications des remédiations
 Sagissant ici d'une double remédiation, pour obtenir un résultat plus visuel, un scan global a été effectué et celui-ci confirme bien le passage de 16 à 14 points en échec pour un résultat de 90%.
 
 //Validation  
@@ -116,7 +116,7 @@ oscap-ssh --sudo root@$target 22 xccdf eval \
 --cpe $cpe_dict \  
 $data_stream  
 
-###  Titre 3 Conclusion
+### Conclusion
 Des serveurs en production sont, par définition, exposés à tous types de menaces. C'est pourquoi il est important d'avoir un moyen de vérifier leur état et ce de façon réfulière. Dans le cas de SCAP, une bonne pratique pourrait être de planifier un scan de façon "régulière", par exemple, 1 fois par mois en faisant bien attention de s'assurer que les guides soient mis à jours. Il peut être également intéressant de garder un historique, par exemple 12 rapports (1an), afin de pouvoir observer l'évolution en terme de sécurité. Aussi, dans le cas d'un paramètre mis en échec alors que précédemment il ne l'était pas pourrait être un signe important (alerte) qu'il s'agisse d'un acte malveillant ou non.  
 Au délà des tâches planifiées, il serait bon également de garder en tête un planning de remédiations (non urgentes) afin de continuellement sécuriser les machines de manière progressive.  
 Afin de rendre les scans et les remédiations plus flexibles, il serait sans doute intéressant d'avoir des guides de sécurités et fichiers de remédiations qui regrouperaient uniquement certains domaines. Comme par exemple un guide de sécurité et un fichier de remédiation axé uniquement sur les mots de passe. Et cela, dans le but de ne pas être obligé de lancer un scan complet lorsque ce n'est pas nécessaire (SCAP Workbench).
