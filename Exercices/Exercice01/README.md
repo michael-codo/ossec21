@@ -9,7 +9,7 @@ Etapes:
 4. Décision concernant les points à résoudre
 5. Préparation de la remédiation et application de celle-ci
 6. Validation de l'applications des remédiations
-7. Plus loin
+7. Conclusion
 
 Copie de clé et installation de l'agent sur la machine cliente:
 ---
@@ -68,3 +68,76 @@ Dans ce cas, le résultat est nettement revu à la baisse, 151 points de contrô
 
 Décision concernant les points à résoudre
 ---
+La sécurité est un point essentiel en informatique malgré tout remédier à tous les points d'un rapport de sécurité peut, dans certains cas, être plus risqué.
+Un serveur en production pourrait rencontrer des problèmes lors de l'application de remédiations, interrompant ainsi les services ce qui aurait bien évidemment un effet contre-productif. C'est pourquoi il est important de planifier et tester toutes ces routines de maintenance en dehors d'un environnement de production.
+C'est dans ce cadre, qu'il a été décidé de remédier à 2 problèmes faisant partie de la même catégorie:
+- xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs
+- xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs
+
+Préparation de la remédiation et application de celle-ci
+---
+//Scan d'une règle (répetée une 2ème fois pour rule2)
+rule1="xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs"
+type="rule1-$target-bp028minimal-before"
+profile="xccdf_org.ssgproject.content_profile_anssi_nt28_minimal"
+oscap-ssh --sudo root@$target 22 xccdf eval \
+--fetch-remote-resource \
+--profile $profile \
+--results $type-results.xml \
+--report $type-report.html \
+--oval-results \
+--cpe $cpe_dict \
+--rule $rule1 \
+$data_stream
+//Génération du guide de configuration
+oscap xccdf generate guide \
+--profile $profile \
+--output $type-guide.html \
+$type-results.xml
+
+//Génération d'une remédiation Ansible (répetée une 2ème fois pour rule2)
+result_id=$(oscap info rule2-$type-results.xml | grep 'Result ID' | sed 's/[[:blank:]]Result ID: //')
+oscap xccdf generate fix \
+--fix-type ansible \
+--output rule1-$type-playbook.yml \
+--profile $profile \
+--result-id $result_id \
+rule1-$type-results.xml
+
+L'idée initiale était de générer les 2 remédiations mais de les déclencher à l'aide d'un seul fichier (via import_playbook):
+- Set_Password_Expiration_Parameters.yml
+- rule1-srv2-bp028minimal-before-playbook.yml
+- rule2-srv2-bp028minimal-before-playbook.yml
+
+Pour une raison encore non-identifiée, bien que les résultats d'Ansible étaient bons, les paramètres ne semblaient pas avoir été modifiés.
+De ce fait, rule1*.yml a été utilisé et une fois la configuration confirmée, le fichier "maître" a été utilisé à nouveau avec succès.
+
+Validation de l'applications des remédiations
+---
+Sagissant ici d'une double remédiation, pour obtenir un résultat plus visuel, un scan global a été effectué et celui-ci confirme bien le passage de 16 à 14 points en échec pour un résultat de 90%.
+
+//Validation
+type="$target-bp028minimal-after"
+profile="xccdf_org.ssgproject.content_profile_anssi_nt28_minimal"
+oscap-ssh --sudo root@$target 22 xccdf eval \
+--fetch-remote-resource \
+--profile $profile \
+--results $type-results.xml \
+--report $type-report.html \
+--oval-results \
+--cpe $cpe_dict \
+$data_stream
+
+Conclusion
+---
+Des serveurs en production sont, par définition, exposés à tous types de menaces. C'est pourquoi il est 
+d'avoir un moyen de vérifier leur état et ce de façon réfulière. Dans le cas de SCAP, une bonne pratique pourrait être de planifier un scan de façon "régulière", par exemple, 1 fois par mois en faisant bien attention de s'assurer que les guides soient mis à jours. Il peut être également intéressant de garder un historique, par exemple 12 rapports (1an), afin de pouvoir observer l'évolution en terme de sécurité. Aussi, dans le cas d'un paramètre mis en échec alors que précédemment il ne l'était pas pourrait être un signe important (alerte) qu'il s'agisse d'un acte malveillant ou non.
+Au délà des tâches planifiées, il serait bon également de garder en tête un planning de remédiations (non urgentes) afin de continuellement sécuriser les machines de manière progressive.
+Afin de rendre les scans et les remédiations plus flexibles, il serait sans doute intéressant d'avoir des guides de sécurités et fichiers de remédiations qui regrouperaient uniquement certains domaines. Comme par exemple un guide de sécurité et un fichier de remédiation axé uniquement sur les mots de passe. Et cela, dans le but de ne pas être obligé de lancer un scan complet lorsque ce n'est pas nécessaire (SCAP Workbench).
+Enfin, il est capital de traiter les "failles" en fonction des risques et non pas seulement en fonction du nombre de points en échec.
+
+
+
+
+
+
