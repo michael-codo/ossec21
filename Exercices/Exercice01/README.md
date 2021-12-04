@@ -55,7 +55,7 @@ oscap-ssh --sudo root@$target 22 xccdf eval \
 $data_stream  
 //Activation d'un service http basique afin de consulter les rapports  
 python3 -m http.server 8080  
-Note: étant donné que firewalld est inactif il était, ici, inutile d'ajouter une nouvelle règle pour accèder à la station de contrôle en http```
+Note: étant donné que firewalld est inactif il était, ici, inutile d'ajouter une nouvelle règle pour accèder à la station de contrôle en http
 
 Le rapport "srv2-bp028minimal-before-report.html" affiche un total de 39 points testés dont 16 ont échoués pour un résultat de 87% étant donné qu'il s'agit là du niveau minimal, on peut penser qu'il faudrait obtenir 100% peu importe le contexte. Afin d'avoir un point de comparaison, le scan a été également fait en niveau intermédiaire. Dans ce cas, le résultat est nettement revu à la baisse, 151 points de contrôle dont 100 ont échoués pour un résultat de 45%.
 
