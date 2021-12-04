@@ -14,7 +14,7 @@ Etapes:
 ###  Copie de clé et installation de l'agent sur la machine cliente:
 La première étape consiste en la préparation de la communication entre la station de contrôle et la machine cliente. Pour commencer, il est nécessaire de générer des clés RSA afin de permettre d'avoir une communication chiffrée (SSH) et de s'authentifier par la même occasion. Ensuite il est nécessaire de copier la clé publique sur la machine cliente et installer l'agent SCAP.  
 
-//Génération d'une paire de clés  
+```//Génération d'une paire de clés  
 ssh-keygen -b 4096 -t rsa -f $HOME/.ssh/id_rsa_srv2 -q -N ""  
 //Utilisation de la variable $target et copie de la clé publique sur la machine cible  
 target="srv2"  
@@ -32,7 +32,7 @@ type="$target-bp028m-minimalbefore"
 //Définition du data stream  
 data_stream="/usr/share/xml/scap/ssg/content/ssg-rhel7-ds-1.2.xml"  
 //Définition du dictionnaire  
-cpe_dict="/usr/share/xml/scap/ssg/content/ssg-rhel7-cpe-dictionary.xml"  
+cpe_dict="/usr/share/xml/scap/ssg/content/ssg-rhel7-cpe-dictionary.xml" ``` 
 
 ### Scan de la machine cliente et analyse du rapport
 Avant de lancer un scan, il est nécessaire de sélectionner et identifier le profil à utiliser. Une fois le scan terminé il est alors possible de consulter les résultats au format .html
