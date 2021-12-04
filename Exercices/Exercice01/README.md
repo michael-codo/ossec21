@@ -20,7 +20,9 @@ ssh-keygen -b 4096 -t rsa -f $HOME/.ssh/id_rsa_srv2 -q -N ""
 target="srv2"  
 ssh-copy-id $target  
 //Installation de SCAP sur la machine  cible  
-ssh $target "yum -y install scap-security-guide"```
+ssh $target "yum -y install scap-security-guide"
+```
+
 
 ### Préparation de la station
 La station ayant déjà été utilisée, il n'est pas nécessaire d'installer openscap-utils et scap-security-guide. Il est toutefois nécessaire de télécharger les guides de sécurité qui sont différents des précédents.
