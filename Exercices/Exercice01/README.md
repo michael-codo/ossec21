@@ -15,13 +15,13 @@ Copie de clé et installation de l'agent sur la machine cliente:
 ---
 La première étape consiste en la préparation de la communication entre la station de contrôle et la machine cliente. Pour commencer, il est nécessaire de générer des clés RSA afin de permettre d'avoir une communication chiffrée (SSH) et de s'authentifier par la même occasion. Ensuite il est nécessaire de copier la clé publique sur la machine cliente et installer l'agent SCAP.  
 
-//Génération d'une paire de clés
-ssh-keygen -b 4096 -t rsa -f $HOME/.ssh/id_rsa_srv2 -q -N ""
-//Utilisation de la variable $target et copie de la clé publique sur la machine cible
-target="srv2"
-ssh-copy-id $target
-//Installation de SCAP sur la machine  cible
-ssh $target "yum -y install scap-security-guide"
+//Génération d'une paire de clés  
+ssh-keygen -b 4096 -t rsa -f $HOME/.ssh/id_rsa_srv2 -q -N ""  
+//Utilisation de la variable $target et copie de la clé publique sur la machine cible  
+target="srv2"  
+ssh-copy-id $target  
+//Installation de SCAP sur la machine  cible  
+ssh $target "yum -y install scap-security-guide"  
 
 Préparation de la station
 ---
