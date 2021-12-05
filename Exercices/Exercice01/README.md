@@ -99,8 +99,8 @@ L'idée initiale était de générer les 2 remédiations mais de les déclencher
 - rule1-srv2-bp028minimal-before-playbook.yml
 - rule2-srv2-bp028minimal-before-playbook.yml
 
-```ansible-playbook -i "$target," Set_Password_Expiration_Parameters.yml
-```
+```ansible-playbook -i "$target," Set_Password_Expiration_Parameters.yml````  
+
 Pour une raison encore non-identifiée, bien que les résultats d'Ansible étaient bons, les paramètres ne semblaient pas avoir été modifiés. De ce fait, rule1*.yml a été utilisé et une fois la configuration confirmée, le fichier "maître" a été utilisé à nouveau avec succès pour la remédiation de rule2.
 
 ### Validation de l'applications des remédiations
