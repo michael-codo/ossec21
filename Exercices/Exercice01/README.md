@@ -40,11 +40,11 @@ Avant de lancer un scan, il est nécessaire de sélectionner et identifier le pr
 ```//Affichage des différents profils disponibles  
 oscap info --fetch-remote-resources $data_stream  
 //Profil minimal retenu pour l'exercice  
-profile=xccdf_org.ssgproject.content_profile_anssi_nt28_minimal  
-Note: intermediate_profile=xccdf_org.ssgproject.content_profile_anssi_nt28_intermediary  
+profile=xccdf_org.ssgproject.content_profile_anssi_bp28_minimal  
+Note: intermediate_profile=xccdf_org.ssgproject.content_profile_anssi_bp28_intermediary  
 //Commande lançant le scan sur $target  
 type="$target-bp028minimal-before"  
-profile="xccdf_org.ssgproject.content_profile_anssi_nt28_minimal"  
+profile="xccdf_org.ssgproject.content_profile_anssi_bp28_minimal"  
 oscap-ssh --sudo root@$target 22 xccdf eval \  
 --fetch-remote-resource \  
 --profile $profile \  
@@ -108,7 +108,7 @@ Sagissant ici d'une double remédiation, pour obtenir un résultat plus visuel, 
 
 ```//Validation  
 type="$target-bp028minimal-after"  
-profile="xccdf_org.ssgproject.content_profile_anssi_nt28_minimal"  
+profile="xccdf_org.ssgproject.content_profile_anssi_bp28_minimal"  
 oscap-ssh --sudo root@$target 22 xccdf eval \  
 --fetch-remote-resource \  
 --profile $profile \  
