@@ -123,3 +123,4 @@ Des serveurs en production sont, par définition, exposés à tous types de mena
 Au délà des tâches planifiées, il serait bon également de garder en tête un planning de remédiations (non urgentes) afin de continuellement sécuriser les machines de manière progressive.  
 Afin de rendre les scans et les remédiations plus flexibles, il serait sans doute intéressant d'avoir des guides de sécurités et fichiers de remédiations qui regrouperaient uniquement certains domaines. Comme par exemple un guide de sécurité et un fichier de remédiation axé uniquement sur les mots de passe. Et cela, dans le but de ne pas être obligé de lancer un scan complet lorsque ce n'est pas nécessaire (SCAP Workbench).
 Enfin, il est capital de traiter les "failles" en fonction des risques et non pas seulement en fonction du nombre de points en échec, dans certains cas, on peut même imaginer que certaines société éprouvent le besoin de personnaliser certaines règles.
+
